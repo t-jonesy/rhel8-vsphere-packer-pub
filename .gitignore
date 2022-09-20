@@ -1,0 +1,18 @@
+# Cache objects
+packer_cache/
+
+# Crash log
+crash.log
+
+# For built boxes
+*.box
+
+# ISOs
+*\.iso
+
+# vars
+*.auto.pkrvars.hcl
+# hyperv
+*hyperv*
+#output
+output*

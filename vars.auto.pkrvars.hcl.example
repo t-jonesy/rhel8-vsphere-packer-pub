@@ -1,0 +1,30 @@
+#vsphere server ip or fqdn
+vsphere_server           = ""
+#vsphere api username (administrator@vsphere.local)
+vsphere_user             = ""
+#vsphere api password
+vsphere_password         = ""
+#destination datacenter
+datacenter               = ""
+#destination host
+host                     = ""
+#destination datastore
+datastore                = ""
+#name of the iso file
+iso_name                 = ""
+#sha256 checksum of the iso
+iso_sha256_checksum      = ""
+#name of the destination VM Network
+network_name             = ""
+#redhat login username
+rh_username              = ""
+#redhat password
+rh_password              = ""
+#username for non-root user
+build_username           = ""
+#hashed password for root and non-root user
+build_password_encrypted = ""
+#plaintext password to pass for login
+ssh_pass                 = ""
+#hashed grub password
+grub_pass                = ""
