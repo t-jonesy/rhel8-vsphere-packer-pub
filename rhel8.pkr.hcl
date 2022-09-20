@@ -8,9 +8,15 @@ source "vsphere-iso" "rhel8"  {
   datacenter          = var.datacenter
   host                = var.host
   insecure_connection = true
+  convert_to_template = true
+  export {
+    force = true
+    output_directory = "./output_vsphere"
+  }
 
   vm_name       = "rhel8-stig-min-template"
   guest_os_type = "rhel8_64Guest"
+#  iso_paths      = ["[${var.datastore}] isos/${var.iso_name}"]
   iso_url      = "iso/${var.iso_name}"
   iso_checksum = "sha256:${var.iso_sha256_checksum}"
   shutdown_command      = "echo '${var.ssh_pass}' | sudo -S shutdown -P now"
@@ -35,7 +41,7 @@ source "vsphere-iso" "rhel8"  {
     network_card = "vmxnet3"
   }
 cd_content = {
-    "/ks.cfg" = templatefile("/cd_files/ks.pkrtpl.hcl", {
+    "/ks.cfg" = templatefile("cd_files/ks.pkrtpl.hcl", {
       build_username           = var.build_username
       build_password_encrypted = var.build_password_encrypted
       grub_pass                = var.grub_pass
@@ -47,7 +53,7 @@ build {
   sources = ["source.vsphere-iso.rhel8"]
 
   provisioner "shell" {
-    environment_vars  = ["RH_USERNAME=${var.rh_username}", "RH_PASSWORD=${var.rh_password}"]
+    environment_vars  = ["RH_USERNAME=${var.rh_username}", "RH_PASSWORD=${var.rh_password}", "GRUB_USER=${var.grub_user}"]
     expect_disconnect = true
     pause_before      = "10s"
     execute_command   = "echo '${var.ssh_pass}' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
