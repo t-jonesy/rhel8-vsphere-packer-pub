@@ -28,3 +28,7 @@ build_password_encrypted = ""
 ssh_pass                 = ""
 #hashed grub password
 grub_pass                = ""
+#grub superuser account
+grub_user                = ""
+#var_accounts_authorized_local_users_regex for stig checks
+local_users = ""

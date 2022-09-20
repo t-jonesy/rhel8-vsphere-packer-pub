@@ -58,3 +58,11 @@ variable "grub_pass" {
   type    = string
   default = ""
 }
+variable "grub_user" {
+  type    = string
+  default = ""
+}
+variable "local_users" {
+  type    = string
+  default = ""
+}

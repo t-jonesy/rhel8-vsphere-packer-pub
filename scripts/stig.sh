@@ -1,21 +1,9 @@
 #!/bin/bash -eux
-#setup reqs
-yum install -y python3 python39 oddjob
-systemctl enable --now oddjobd
-authselect select sssd with-mkhomedir --force
-#create venv
-cd /root/
-mkdir python-venv
-cd python-venv
-python3.9 -m venv ansible
-#enter venv
-source ansible/bin/activate
-#install ansible
-python3.9 -m pip install --upgrade pip
-python3.9 -m pip install ansible
-#get stig role
-ansible-galaxy install RedHatOfficial.rhel8_stig -p roles
-#create playbook
-echo -e "- hosts: all\n  roles:\n     - { role: RedHatOfficial.rhel8_stig }" > playbook.yml
-#run playbook
-ansible-playbook -i "localhost," -c local playbook.yml | tee /root/ansible-stig.log
+#possibly not needed now that it's in kickstart
+#authselect select sssd with-mkhomedir --force
+sed -i "s/\(set superusers=\).*/\1=\""$GRUB_USER"\"/g" /etc/grub.d/01_users
+grub2-mkconfig -o "$(readlink -e /etc/grub2.cfg)"
+mkdir -p /root/stig/
+cd /root/stig/
+curl "https://access.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml.bz2" -o security-data-oval-com.redhat.rhsa-RHEL8.xml.bz2
+oscap xccdf eval --local-files . --profile stig --report report.html --remediate /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
